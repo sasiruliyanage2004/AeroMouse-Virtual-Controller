@@ -6,6 +6,7 @@ AeroMouse is a lightweight, background-running Windows desktop application that 
 
 - **Background Execution:** Runs silently in the Windows System Tray without annoying terminal windows.
 - **Wake/Sleep State Machine:** Put the app to sleep and wake it up using a simple "Thumbs Up" gesture to save CPU and prevent accidental clicks.
+- **Smart Hand Locking:** When waking the app, it intelligently locks onto the hand you used. If your other hand enters the camera frame while you are working, the app completely ignores it, preventing chaotic mouse jumps!
 - **Smart Gesture Recognition:**
   - **Move Cursor:** Point with your index finger.
   - **Left Click:** Pinch your index finger and thumb together.
@@ -44,7 +45,7 @@ AeroMouse is a lightweight, background-running Windows desktop application that 
    ```
 
 4. **Download the MediaPipe Model:**
-   Download the `hand_landmarker.task` file from Google and place it inside the `core/` directory. (If it is not already there).
+   Download the `hand_landmarker.task` file from Google and place it inside the `core/` directory.
 
 5. **Run the App:**
    ```bash
@@ -55,7 +56,8 @@ AeroMouse is a lightweight, background-running Windows desktop application that 
 ## 🎮 Usage Guide
 
 1. When you start the app, it is initially in **SLEEP** mode.
-2. Show a **Thumbs Up** 👍 to the camera for 2 seconds to **WAKE** the app. A Windows notification will confirm it is Active.
-3. Control your PC using the gestures listed in the Features section.
-4. Show a **Thumbs Up** 👍 again for 2 seconds to put the app back to **SLEEP**.
-5. To exit, right-click the system tray icon and click "Exit".
+2. Show a **Thumbs Up** 👍 to the camera for 2 seconds to **WAKE** the app. 
+3. The app will **Lock** onto that hand. A Windows notification will confirm it is Active.
+4. Control your PC using the gestures listed in the Features section.
+5. Show a **Thumbs Up** 👍 again for 2 seconds to put the app back to **SLEEP**.
+6. To exit, right-click the system tray icon and click "Exit".

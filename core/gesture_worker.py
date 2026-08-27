@@ -11,7 +11,7 @@ class GestureWorker(threading.Thread):
         self.running = True
         self.is_sleeping = True 
         self.status_callback = status_callback
-        self.daemon = True # Allows script to exit safely
+        self.daemon = True 
         
     def _emit_status(self, msg):
         print(msg)
@@ -41,14 +41,19 @@ class GestureWorker(threading.Thread):
             if action:
                 act_type, val = action
                 
-                # Toggle Wake/Sleep state
+                # Toggle Wake/Sleep state and handle Hand Locking
                 if act_type == 'toggle_state':
                     if time.time() - last_toggle_time > 2.0:
-                        self.is_sleeping = not self.is_sleeping
+                        engine.is_sleeping = not engine.is_sleeping
+                        self.is_sleeping = engine.is_sleeping
+                        
                         if self.is_sleeping:
+                            engine.locked_handedness = None
                             self._emit_status("SLEEPING (Thumbs Up to Wake)")
                         else:
-                            self._emit_status("ACTIVE (Thumbs Up to Sleep)")
+                            engine.locked_handedness = val # Lock to the specific hand
+                            self._emit_status(f"ACTIVE (Locked to {val} Hand)")
+                        
                         last_toggle_time = time.time()
                         
                 # Execute OS actions only if ACTIVE
@@ -66,6 +71,7 @@ class GestureWorker(threading.Thread):
                     elif act_type == 'close_window':
                         controller.close_window()
             
+            # Reduce CPU usage
             if self.is_sleeping:
                 time.sleep(0.1) 
             else:
