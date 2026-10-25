@@ -1,3 +1,4 @@
+import subprocess
 import pystray
 from PIL import Image, ImageDraw
 from pystray import MenuItem as item
@@ -19,12 +20,16 @@ worker = None
 def update_status(status_text):
     global icon
     if icon:
-        icon.title = f"AI Mouse: {status_text}"
+        icon.title = f"SAS AeroMouse: {status_text}"
         try:
             # Show a notification bubble in Windows
-            icon.notify(status_text, title="AI Virtual Mouse")
+            icon.notify(status_text, title="SAS AI Virtual Controller")
         except:
             pass
+
+def on_open_sas(icon, item):
+    # Opens SAS Assistant console in a dedicated window
+    subprocess.Popen("start cmd /k python sas_assistant.py", shell=True)
 
 def on_quit(icon, item):
     global worker
@@ -35,15 +40,16 @@ def on_quit(icon, item):
 def setup_app():
     global icon, worker
     
-    # Start the AI Background Worker
+    # Start the AI Background Worker for Gestures
     worker = GestureWorker(status_callback=update_status)
     worker.start()
     
-    # Create System Tray icon
+    # Create System Tray icon with SAS options
     menu = pystray.Menu(
+        item('Open SAS AI Assistant', on_open_sas),
         item('Exit', on_quit)
     )
-    icon = pystray.Icon("VirtualMouse", create_image(), "Virtual Mouse Initializing...", menu)
+    icon = pystray.Icon("VirtualMouse", create_image(), "SAS AI Initializing...", menu)
     
     print("System Tray icon created! Running in background...")
     icon.run()
